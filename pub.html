@@ -1,0 +1,244 @@
+<script type=coffee>
+window.pub = window.location.pathname
+
+dom.BODY = ->
+  initialize()
+
+  DIV {},
+    TITLE 'Micropub: ' + window.pub.substr('/pub/'.length).replace('-', ' ')
+
+    # Micropub Title
+    if state.edit
+      H1 {},
+        INPUT
+          type: 'text'
+          style: width: 100, verticalAlign: 'top'
+          onChange: (e) -> state[pub].type = e.target.value
+          value: state[pub].type
+        AUTOSIZEBOX
+          width: 600
+          onChange: (e) -> state[pub].title = e.target.value
+          value: state[pub].title
+    else
+      H1 SPAN(className: 'pubtype', state[pub].type + ':'), state[pub].title
+
+    # Stuff to do later
+    DIV className: 'todo',
+      DIV 'RATINGS'
+      DIV 'Posted by Kat'
+      DIV 'Tags'
+
+    # Micropub Body
+    if state.edit
+      AUTOSIZEBOX
+        width: 700
+        fontSize: 18
+        onChange: (e) -> state[pub].body = e.target.value
+        value: state[pub].body
+    else
+      MARKDOWN state[pub].body
+
+    # Files
+    H2 'Files:'
+    H3 'Integration Cassette file'
+    DIV
+      className: 'file'
+      IMG className: "fileicon", src: '/pub/files/fileicon.png'
+      P className: 'filename', 'Psi9inGenome'
+
+    H3 'Sequencing Histogram files'
+    for filename in ['245_kb_34_FD4', '245_kb_34_FD4', '245_kb_34_FD4', '245_kb_34_FD4']
+      DIV className: 'file',
+        IMG className: 'fileicon', src: '/pub/files/fileicon.png'
+        P className: 'filename', filename
+
+    # Gratitude
+    H2 'Gratitude Graph:'
+    DIV className: "todo", 'GRAPH HERE YOOO'
+
+    # Comments
+    H2 'Comments:'
+    for comment in [
+        'You should have a lane with just the raw, unamplified genomic prep as well.'
+        'I am going to attempt replicating this data.'
+        'Your sequencing histograms are really poor quality, you could redo the gel extraction to get cleaner data'
+        'This gel image sucks.']
+      DIV className: 'comment', P comment
+
+
+
+# ***********************************
+# Utilities
+MD = MARKDOWN = (src) ->
+  html = marked(src, {sanitize: false})
+  DIV dangerouslySetInnerHTML: {__html: html}
+
+dom.AUTOSIZEBOX = ->
+  props = bus.clone(@props)
+  props.ref = 'textbox'
+  props.rows = 1
+  delete props['data-widget']
+  delete props['data-key']
+  TEXTAREA(props)
+
+dom.AUTOSIZEBOX.up = ->
+  target = @refs.textbox.getDOMNode()
+  userhitenter = fetch('userhitenter')
+  if userhitenter.hit
+    userhitenter.hit = false
+    save(userhitenter)
+    target.focus()
+    
+  resizebox(target)
+
+dom.AUTOSIZEBOX.refresh = ->
+  target = @refs.textbox.getDOMNode()
+  resizebox(target)
+
+resizebox = (target) ->
+  while (target.rows > 1 && target.scrollHeight < target.offsetHeight)
+    target.rows--
+  while (target.scrollHeight > target.offsetHeight && target.rows < 10000)
+    target.rows++
+
+initialize = ->
+  if not bus.loading() and not state[pub]
+    state[pub] = {type: '', title: '', body: ''}
+
+  document.body?.onkeydown or= (e) ->
+    if e.keyCode == 27  # Escape key
+      e.stopPropagation()
+      state.edit = not state.edit
+      return
+
+</script>
+
+<style>
+/* Reset - from https://ehtmlu.com/blog/a-simple-css-reset/ */
+* {
+  margin: 0;
+  padding: 0;
+  font-size: 1em;
+  font-family: inherit;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 62.5%;
+}
+/* ******* */
+
+body {
+    margin: 1em 4em 0 10em;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    color: rgb(30, 30, 30);
+
+    max-width: 70em;
+    background-color: rgb(255, 255, 250);
+}
+
+h1,h2,h3 {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 100;
+}
+h1 {
+    font-size: 3em;
+    font-weight: 200;
+    margin: 0.8em 0;
+}
+h2 {
+    font-size: 2.3em;
+    font-weight: 100;
+    margin: 1em 0 0.5em -0.2em;
+    color: rgb(63, 63, 63);
+}
+h3 {
+    font-size: 2em;
+
+}
+
+p {
+    line-height: 1.4;
+}
+
+a {
+    text-decoration: none;
+    color: rgb(0, 132, 255);
+}
+
+h1 .pubtype {
+    color: navy;
+    font-weight: 500;
+    font-size: 90%;
+    margin-right: 0.3em;
+}
+
+p {
+    font-size: 18px;
+}
+
+.todo {
+    font-size: 2em;
+    background-color: hotpink;
+}
+
+
+table {
+    font-size: 1.5em;
+    margin: 1em 0;
+    border-collapse: collapse;
+}
+
+td,th {
+    padding: 0.4em;
+    border: 1px solid rgb(159, 159, 159);
+}
+
+th.heading {
+    background-color: rgb(0, 101, 196);
+    color: white;
+    font-weight: 500;
+    text-align: left;
+    font-style: italic;
+    font-weight: 600;
+    padding-left: 2em;
+}
+
+img {
+    display: block;
+    border: 1px solid rgb(0, 101, 196);
+}
+
+div.file {
+    display: inline-block;
+    /* border: 1px solid rgb(178, 178, 255); */
+}
+
+.fileicon {
+    width: 65px;
+    height: 85px;
+    border: none;
+}
+p.filename {
+    font-size: 1em;
+}
+
+.comment {
+    font-size: 2em;
+    margin: 1em 0 1em 1em;
+}
+
+.comment::before {
+    font-family: 'Zapf Dingbats';
+    /* content: "⬤"; */
+    content: "\2B24";
+    display: inline;
+    float: left;
+    margin-right: 1em;
+}
+</style>  
+<script src="https://invisible.college/js/marked.min.js"></script>
+<script src="/pub/client.js" braid_mode=true></script>

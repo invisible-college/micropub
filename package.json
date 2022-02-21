@@ -1,0 +1,10 @@
+{
+  "name": "micropub",
+  "version": "0.0.0",
+  "main": "server.js",
+  "dependencies": {
+    "braidify": "^0.1.18",
+    "node-fetch": "^2.6.7",
+    "statebus": "^6.1.16"
+  }
+}
