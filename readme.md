@@ -7,7 +7,7 @@ npm install
 node server.js
 ```
 
-Then go to `http://localhost` in your web browser, or look at the console to
-see what port it found open.
+Then go to `http://localhost/pub/some-pub` in your web browser. You might need
+to check the console to see what port it found open.
 
-You can set the port with `port=4444 node server.js`.
+You can configure the port manually with `port=4444 node server.js`.
