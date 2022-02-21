@@ -1,6 +1,6 @@
 # `micropub`
 
-Install with:
+Install and run with:
 
 ```
 npm install
