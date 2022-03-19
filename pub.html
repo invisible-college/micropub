@@ -22,11 +22,16 @@ dom.BODY = ->
     else
       H1 SPAN(className: 'pubtype', state[pub].type + ':'), state[pub].title
 
-    # Stuff to do later
-    DIV className: 'todo',
-      DIV 'RATINGS'
-      DIV 'Posted by Kat'
-      DIV 'Tags'
+    # Micropub Author
+    if state.edit
+      AUTOSIZEBOX
+        width: 700
+        fontSize: 18
+        onChange: (e) -> state[pub].author = e.target.value
+        value: state[pub].author
+    else
+      state[pub].author
+  
 
     # Micropub Body
     if state.edit
@@ -54,7 +59,7 @@ dom.BODY = ->
 
     # Gratitude
     H2 'Gratitude Graph:'
-    DIV className: "todo", 'GRAPH HERE YOOO'
+
 
     # Comments
     H2 'Comments:'
@@ -115,7 +120,7 @@ initialize = ->
 
 <style>
 /* Reset - from https://ehtmlu.com/blog/a-simple-css-reset/ */
-* {
+body {
   margin: 0;
   padding: 0;
   font-size: 1em;
@@ -126,14 +131,14 @@ initialize = ->
   box-sizing: border-box;
 }
 
-html {
+/*html {
   font-size: 62.5%;
-}
+}*/
 /* ******* */
 
 body {
     margin: 1em 4em 0 10em;
-    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     color: rgb(30, 30, 30);
 
     max-width: 70em;
@@ -141,22 +146,23 @@ body {
 }
 
 h1,h2,h3 {
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-    font-weight: 100;
+    font-family: Georgia, serif;
+    font-weight: 700;
 }
 h1 {
-    font-size: 3em;
-    font-weight: 200;
+    font-size: 2em;
+    font-weight: 400;
     margin: 0.8em 0;
 }
 h2 {
-    font-size: 2.3em;
-    font-weight: 100;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-size: 1.3em;
+    font-weight: 400;
     margin: 1em 0 0.5em -0.2em;
-    color: rgb(63, 63, 63);
+    color: rgb(0, 0, 0);
 }
 h3 {
-    font-size: 2em;
+    font-size: 1.2em;
 
 }
 
@@ -170,8 +176,9 @@ a {
 }
 
 h1 .pubtype {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     color: navy;
-    font-weight: 500;
+    font-weight: 100;
     font-size: 90%;
     margin-right: 0.3em;
 }
