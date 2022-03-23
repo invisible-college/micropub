@@ -44,31 +44,31 @@ dom.BODY = ->
       MARKDOWN state[pub].body
 
     # Files
-    H2 'Files:'
-    H3 'Integration Cassette file'
-    DIV
-      className: 'file'
-      IMG className: "fileicon", src: '/pub/files/fileicon.png'
-      P className: 'filename', 'Psi9inGenome'
+    # H2 'Files:'
+    # H3 'Integration Cassette file'
+    # DIV
+    #   className: 'file'
+    #   IMG className: "fileicon", src: '/pub/files/fileicon.png'
+    #   P className: 'filename', 'Psi9inGenome'
 
-    H3 'Sequencing Histogram files'
-    for filename in ['245_kb_34_FD4', '245_kb_34_FD4', '245_kb_34_FD4', '245_kb_34_FD4']
-      DIV className: 'file',
-        IMG className: 'fileicon', src: '/pub/files/fileicon.png'
-        P className: 'filename', filename
+    # H3 'Sequencing Histogram files'
+    # for filename in ['245_kb_34_FD4', '245_kb_34_FD4', '245_kb_34_FD4', '245_kb_34_FD4']
+    #   DIV className: 'file',
+    #     IMG className: 'fileicon', src: '/pub/files/fileicon.png'
+    #     P className: 'filename', filename
 
-    # Gratitude
-    H2 'Gratitude Graph:'
+    # # Gratitude
+    # H2 'Gratitude Graph:'
 
 
-    # Comments
-    H2 'Comments:'
-    for comment in [
-        'You should have a lane with just the raw, unamplified genomic prep as well.'
-        'I am going to attempt replicating this data.'
-        'Your sequencing histograms are really poor quality, you could redo the gel extraction to get cleaner data'
-        'This gel image sucks.']
-      DIV className: 'comment', P comment
+    # # Comments
+    # H2 'Comments:'
+    # for comment in [
+    #     'You should have a lane with just the raw, unamplified genomic prep as well.'
+    #     'I am going to attempt replicating this data.'
+    #     'Your sequencing histograms are really poor quality, you could redo the gel extraction to get cleaner data'
+    #     'This gel image sucks.']
+    #   DIV className: 'comment', P comment
 
 
 
